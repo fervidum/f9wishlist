@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^7.1.0",
+    "autoprefixer": "^9.8.6",
+    "eslint": "^7.7.0"
+  }
+}

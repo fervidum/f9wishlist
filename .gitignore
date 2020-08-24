@@ -1,0 +1,20 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+# https://git-scm.com/docs/gitignore
+# https://help.github.com/articles/ignoring-files
+# Example .gitignore files: https://github.com/github/gitignore
+
+# Ignore to use as 'env' file.
+wp-cli.local.yml
+
+vendor
+node_modules
+
+*.log
+*.sql
+
+.DS_Store
+Thumbs.db
+desktop.ini
+style.css
+
+assets/css/*.css

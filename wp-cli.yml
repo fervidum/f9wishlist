@@ -1,0 +1,8 @@
+require:
+  - bin/lint-js.php
+  - bin/link.php
+  - bin/pot.php
+  - bin/sass.php
+  - bin/ln-i18n.php
+  - bin/postcss.php
+  - bin/cleancss.php
