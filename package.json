@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "autoprefixer": "^9.8.6"
+  },
+  "scripts": {
+    "sass": "sass --no-source-map css",
+    "watch": "sass --watch --no-source-map css",
+    "postcss": "postcss css/style.css --output css/style.css",
+    "cleancss": "cleancss --level 1 --format breakWith=lf --output css/style.css css/style.css"
+  }
+}

@@ -1,0 +1,69 @@
+@import "../vendor/twbs/bootstrap/scss/functions";
+@import "variables";
+@import "../vendor/twbs/bootstrap/scss/mixins";
+@import "reboot";
+@import "type";
+@import "grid";
+@import "buttons";
+@import "nav";
+
+body > div { @extend %container; }
+
+header {
+  padding-top: $spacer;
+  padding-bottom: $spacer;
+
+  > a {
+    @extend %btn, %btn-primary;
+    float: right;
+
+    &:focus {
+      background-color: #008ec2;
+      box-shadow: 0 1px 0 #0073aa, 0 0 2px 1px #33b3db;
+    }
+  }
+
+  span { color: $gray-600; }
+}
+
+nav {
+  @extend %nav-base,%nav-tabs;
+  @include font-size($input-btn-font-size);
+  margin-bottom: (36rem/16);
+
+  span { @extend %nav-link,%nav-tabs-item,%nav-tabs-link,%nav-tabs-link-active; }
+}
+
+main {
+  @include make-row(47px);
+}
+
+article, aside {
+  @include make-col-ready(47px);
+}
+
+aside {
+  font-size: percentage(14.4/18);
+}
+
+@include media-breakpoint-up(md) {
+  article {
+    @include make-col(658, 987);
+  }
+
+  aside {
+    @include make-col(329, 987);
+  }
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    padding-top: (9rem/16);
+    padding-bottom: (9rem/16);
+  }
+
+  b { float: right; }
+}
