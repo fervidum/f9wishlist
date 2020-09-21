@@ -20,7 +20,7 @@ if ( ! defined( 'F9WISHLIST_PLUGIN_FILE' ) ) {
 	define( 'F9WISHLIST_PLUGIN_FILE', __FILE__ );
 }
 
-// Include the main WooCommerce class.
+// Include the main F9wishlist class.
 if ( ! class_exists( 'F9wishlist', false ) ) {
 	include_once dirname( F9WISHLIST_PLUGIN_FILE ) . '/includes/class-f9wishlist.php';
 }

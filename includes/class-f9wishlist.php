@@ -20,7 +20,7 @@ final class F9wishlist {
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.0';
+	public $version = '1.0.0-alpha';
 
 	/**
 	 * The single instance of the class.
@@ -37,7 +37,7 @@ final class F9wishlist {
 	 *
 	 * @since 1.0.0
 	 * @static
-	 * @see WC()
+	 * @see f9wishlist()
 	 * @return F9wishlist - Main instance.
 	 */
 	public static function instance() {
@@ -63,6 +63,7 @@ final class F9wishlist {
 	 */
 	private function init_hooks() {
 		register_activation_hook( F9WISHLIST_PLUGIN_FILE, array( 'F9wishlist_Install', 'install' ) );
+		add_action( 'init', array( 'F9wishlist_Install', 'create_pages' ) );
 
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
@@ -139,7 +140,9 @@ final class F9wishlist {
 		 * Core classes.
 		 */
 		include_once F9WISHLIST_ABSPATH . 'includes/f9wishlist-core-functions.php';
+		include_once F9WISHLIST_ABSPATH . 'includes/class-f9wishlist-post-types.php';
 		include_once F9WISHLIST_ABSPATH . 'includes/class-f9wishlist-install.php';
+		include_once F9WISHLIST_ABSPATH . 'includes/class-f9wishlist-ajax.php';
 
 		if ( $this->is_request( 'admin' ) ) {
 			include_once F9WISHLIST_ABSPATH . 'includes/admin/class-f9wishlist-admin.php';

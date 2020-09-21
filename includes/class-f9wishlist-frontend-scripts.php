@@ -28,10 +28,18 @@ class F9wishlist_Frontend_Scripts {
 	private static $styles = array();
 
 	/**
+	 * Contains an array of script handles localized by WC.
+	 *
+	 * @var array
+	 */
+	private static $wp_localize_scripts = array();
+
+	/**
 	 * Hook in methods.
 	 */
 	public static function init() {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'load_scripts' ) );
+		add_action( 'wp_print_scripts', array( __CLASS__, 'localize_printed_scripts' ), 5 );
 	}
 
 	/**
@@ -77,7 +85,7 @@ class F9wishlist_Frontend_Scripts {
 	 * @param  string   $version   String specifying script version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
 	 * @param  boolean  $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
 	 */
-	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = WC_VERSION, $in_footer = true ) {
+	private static function register_script( $handle, $path, $deps = array( 'jquery' ), $version = F9WISHLIST_VERSION, $in_footer = true ) {
 		self::$scripts[] = $handle;
 		wp_register_script( $handle, $path, $deps, $version, $in_footer );
 	}
@@ -92,7 +100,7 @@ class F9wishlist_Frontend_Scripts {
 	 * @param  string   $version   String specifying script version number, if it has one, which is added to the URL as a query string for cache busting purposes. If version is set to false, a version number is automatically added equal to current installed WordPress version. If set to null, no version is added.
 	 * @param  boolean  $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
 	 */
-	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = WC_VERSION, $in_footer = true ) {
+	private static function enqueue_script( $handle, $path = '', $deps = array( 'jquery' ), $version = F9WISHLIST_VERSION, $in_footer = true ) {
 		if ( ! in_array( $handle, self::$scripts, true ) && $path ) {
 			self::register_script( $handle, $path, $deps, $version, $in_footer );
 		}
@@ -110,7 +118,7 @@ class F9wishlist_Frontend_Scripts {
 	 * @param  string   $media   The media for which this stylesheet has been defined. Accepts media types like 'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
 	 * @param  boolean  $has_rtl If has RTL version to load too.
 	 */
-	private static function register_style( $handle, $path, $deps = array(), $version = WC_VERSION, $media = 'all', $has_rtl = false ) {
+	private static function register_style( $handle, $path, $deps = array(), $version = F9WISHLIST_VERSION, $media = 'all', $has_rtl = false ) {
 		self::$styles[] = $handle;
 		wp_register_style( $handle, $path, $deps, $version, $media );
 
@@ -130,7 +138,7 @@ class F9wishlist_Frontend_Scripts {
 	 * @param  string   $media   The media for which this stylesheet has been defined. Accepts media types like 'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
 	 * @param  boolean  $has_rtl If has RTL version to load too.
 	 */
-	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = WC_VERSION, $media = 'all', $has_rtl = false ) {
+	private static function enqueue_style( $handle, $path = '', $deps = array(), $version = F9WISHLIST_VERSION, $media = 'all', $has_rtl = false ) {
 		if ( ! in_array( $handle, self::$styles, true ) && $path ) {
 			self::register_style( $handle, $path, $deps, $version, $media, $has_rtl );
 		}
@@ -138,7 +146,7 @@ class F9wishlist_Frontend_Scripts {
 	}
 
 	/**
-	 * Register all WC scripts.
+	 * Register all F9wishlist scripts.
 	 */
 	private static function register_scripts() {
 		$version = F9WISHLIST_VERSION;
@@ -181,6 +189,62 @@ class F9wishlist_Frontend_Scripts {
 
 				self::enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
 			}
+		}
+	}
+
+	/**
+	 * Localize a WC script once.
+	 *
+	 * @since 2.3.0 this needs less wp_script_is() calls due to https://core.trac.wordpress.org/ticket/28404 being added in WP 4.0.
+	 * @param string $handle Script handle the data will be attached to.
+	 */
+	private static function localize_script( $handle ) {
+		if ( ! in_array( $handle, self::$wp_localize_scripts, true ) && wp_script_is( $handle ) ) {
+			$data = self::get_script_data( $handle );
+
+			if ( ! $data ) {
+				return;
+			}
+
+			$name                        = str_replace( '-', '_', $handle ) . '_params';
+			self::$wp_localize_scripts[] = $handle;
+			wp_localize_script( $handle, $name, apply_filters( $name, $data ) );
+		}
+	}
+
+	/**
+	 * Return data for script handles.
+	 *
+	 * @param  string $handle Script handle the data will be attached to.
+	 * @return array|bool
+	 */
+	private static function get_script_data( $handle ) {
+		global $wp;
+
+		switch ( $handle ) {
+			case 'f9wishlist':
+				$params = array(
+					'ajax_url'                => WC()->ajax_url(),
+					'wc_ajax_url'             => WC_AJAX::get_endpoint( '%%endpoint%%' ),
+					// 'i18n_view_cart'          => esc_attr__( 'View cart', 'woocommerce' ),
+					// 'cart_url'                => apply_filters( 'f9wishlist_add_to_wishlist_redirect', wc_get_cart_url(), null ),
+					// 'is_cart'                 => is_cart(),
+					// 'cart_redirect_after_add' => get_option( 'woocommerce_cart_redirect_after_add' ),
+				);
+				break;
+			default:
+				$params = false;
+		}
+
+		return apply_filters( 'f9wishlist_get_script_data', $params, $handle );
+	}
+
+	/**
+	 * Localize scripts only when enqueued.
+	 */
+	public static function localize_printed_scripts() {
+		foreach ( self::$scripts as $handle ) {
+			self::localize_script( $handle );
 		}
 	}
 }

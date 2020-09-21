@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 function f9wishlist_doing_it_wrong( $function, $message, $version ) {
 	$message .= ' Backtrace: ' . wp_debug_backtrace_summary(); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_wp_debug_backtrace_summary
 
-	if ( is_ajax() || WC()->is_rest_api_request() ) {
+	if ( is_ajax() || f9wishlist()->is_rest_api_request() ) {
 		do_action( 'doing_it_wrong_run', $function, $message, $version );
 		error_log( "{$function} was called incorrectly. {$message}. This message was added in version {$version}." ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	} else {

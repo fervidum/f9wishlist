@@ -6,8 +6,6 @@ wp-cli*
 *.md
 *.sql
 *.csv
-*.mo
-*.po
 package*
 postcss.config.js
 
@@ -16,3 +14,14 @@ assets/scss
 bin
 node_modules
 vendor
+
+includes/libs/selfd/.distignore
+includes/libs/selfd/.editorconfig
+includes/libs/selfd/.git
+includes/libs/selfd/.gitattributes
+includes/libs/selfd/.gitignore
+includes/libs/selfd/README.md
+includes/libs/selfd/composer.json
+includes/libs/selfd/composer.lock
+includes/libs/selfd/example.php
+includes/libs/selfd/phpcs.xml
