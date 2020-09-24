@@ -1,0 +1,62 @@
+// Variables
+
+// Color system
+
+$white: #fff !default;
+$black: #000 !default;
+
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+
+@include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+@include _assert-starts-at-zero($grid-breakpoints, "$grid-breakpoints");
+
+// Components
+
+$transition-fade: opacity .15s linear !default;
+
+
+// Z-index master list
+//
+// Warning: Avoid customizing these values. They're used for a bird's eye view
+// of components dependent on the z-axis and are designed to all work together.
+
+$zindex-modal-backdrop: 1040 !default;
+$zindex-modal:          1050 !default;
+
+
+// Modals
+
+// Padding applied to the modal body
+$modal-inner-padding:            1.875rem !default;
+
+$modal-dialog-margin:            .5rem !default;
+$modal-dialog-margin-y-sm-up:    1.75rem !default;
+
+$modal-content-color:            null !default;
+$modal-content-bg:               darken($white, 7.0588235%) !default;
+$modal-content-border-color:     transparent !default;
+$modal-content-border-width:     0 !default;
+$modal-content-border-radius:    0 !default;
+$modal-content-box-shadow-xs:    0 .25rem .5rem rgba($black, .5) !default;
+$modal-content-box-shadow-sm-up: 0 .5rem 1rem rgba($black, .5) !default;
+
+$modal-backdrop-bg:              $black !default;
+$modal-backdrop-opacity:         .5 !default;
+
+$modal-md:                       394px !default;
+
+$modal-fade-transform:           translate(0, -50px) !default;
+$modal-show-transform:           none !default;
+$modal-transition:               transform .3s ease-out !default;

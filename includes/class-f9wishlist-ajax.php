@@ -49,7 +49,11 @@ class F9wishlist_AJAX {
 			return;
 		}
 
-		$product_id        = apply_filters( 'f9wishlist_add_to_wishlist_product_id', absint( $_POST['product_id'] ) );
+		if ( 0 === get_current_user_id() ) {
+			wp_send_json_error( 'unauthenticated' );
+		}
+
+		$product_id = apply_filters( 'f9wishlist_add_to_wishlist_product_id', absint( $_POST['product_id'] ) );
 
 		$wishlists = get_posts(
 			array(

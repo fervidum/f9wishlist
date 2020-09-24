@@ -152,9 +152,19 @@ class F9wishlist_Frontend_Scripts {
 		$version = F9WISHLIST_VERSION;
 
 		$register_scripts = array(
+			'twbs-util'  => array(
+				'src'     => self::get_asset_url( 'assets/js/util.js' ),
+				'deps'    => array( 'jquery' ),
+				'version' => $version,
+			),
+			'twbs-modal' => array(
+				'src'     => self::get_asset_url( 'assets/js/modal.js' ),
+				'deps'    => array( 'jquery', 'twbs-util' ),
+				'version' => $version,
+			),
 			'f9wishlist' => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/f9wishlist.js' ),
-				'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie' ),
+				'deps'    => array( 'jquery', 'jquery-blockui', 'js-cookie', 'twbs-modal' ),
 				'version' => $version,
 			),
 		);
@@ -224,12 +234,11 @@ class F9wishlist_Frontend_Scripts {
 		switch ( $handle ) {
 			case 'f9wishlist':
 				$params = array(
-					'ajax_url'                => WC()->ajax_url(),
-					'wc_ajax_url'             => WC_AJAX::get_endpoint( '%%endpoint%%' ),
-					// 'i18n_view_cart'          => esc_attr__( 'View cart', 'woocommerce' ),
-					// 'cart_url'                => apply_filters( 'f9wishlist_add_to_wishlist_redirect', wc_get_cart_url(), null ),
-					// 'is_cart'                 => is_cart(),
-					// 'cart_redirect_after_add' => get_option( 'woocommerce_cart_redirect_after_add' ),
+					'ajax_url'                  => WC()->ajax_url(),
+					'wc_ajax_url'               => WC_AJAX::get_endpoint( '%%endpoint%%' ),
+					'i18n_username_placeholder' => esc_attr__( 'Username or email', 'woocommerce' ),
+					'i18n_password_placeholder' => esc_attr__( 'Password', 'woocommerce' ),
+					'i18n_login_button'         => esc_attr__( 'Login', 'woocommerce' ),
 				);
 				break;
 			default:
